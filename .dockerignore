@@ -1,8 +1,27 @@
-bin/
-obj/
-.vs/
+# Controle de versão e CI
+.git
+.gitignore
+.github
+
+# Documentação e arquivos do próprio Docker
+README.md
+Dockerfile
+.dockerignore
+
+# Testes não vão para a imagem
+Tests
+
+# Resultados de build e dependências: são refeitos dentro da imagem
+**/bin
+**/obj
+**/node_modules
+Frontend/dist
+wwwroot
+
+# Arquivos de IDE e temporários
+.vs
+.idea
 *.user
 *.suo
 *.userosscache
 *.log
-node_modules/

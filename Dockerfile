@@ -1,32 +1,44 @@
-# Use imagem runtime e SDK do .NET 8
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-WORKDIR /app
-EXPOSE 5000
-ENV ASPNETCORE_URLS=http://0.0.0.0:5000
+# syntax=docker/dockerfile:1
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+# ---------- 1) Front-end (Vite + TypeScript) ----------
+FROM node:22-alpine AS frontend
+WORKDIR /src/Frontend
+
+# Só os manifestos primeiro: a camada do `npm ci` só é refeita quando as dependências mudam
+COPY Frontend/package.json Frontend/package-lock.json ./
+RUN npm ci
+
+COPY Frontend/ ./
+# O Vite escreve em ../wwwroot (ou seja, /src/wwwroot)
+RUN npm run build
+
+# ---------- 2) Build do back-end (.NET) ----------
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-# Se houver .sln e vários projetos, copiar e restaurar separadamente melhora cache
-COPY *.sln ./
-# Copia todos os csproj (ajuste se necessário)
-COPY **/*.csproj ./
-RUN dotnet restore --no-cache || true
+# Só o .csproj primeiro: o `dotnet restore` fica em cache enquanto os pacotes não mudam
+COPY ComparadorNomes.csproj ./
+RUN dotnet restore ComparadorNomes.csproj
 
-# Copia todo o código e publica
+# Restante do código (o .dockerignore deixa de fora Tests/, Frontend/node_modules, wwwroot local, etc.)
 COPY . .
-RUN dotnet publish -c Release -o /app/publish
+# Front compilado no estágio 1
+COPY --from=frontend /src/wwwroot ./wwwroot
+RUN dotnet publish ComparadorNomes.csproj -c Release -o /app/publish --no-restore
 
-# Imagem final
-FROM base AS final
+# ---------- 3) Imagem final ----------
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 
-# Copia publicação
+# A aplicação lê a porta de PORT (o Render define; aqui o padrão é 5000).
+# A imagem base define ASPNETCORE_HTTP_PORTS=8080; zerar evita o aviso de "porta sobrescrita".
+ENV PORT=5000 \
+    ASPNETCORE_HTTP_PORTS=
+EXPOSE 5000
+
 COPY --from=build /app/publish .
 
-# Copia o entrypoint script e garante permissão de execução
-COPY ./entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Usuário sem privilégios (já existe nas imagens oficiais do .NET)
+USER app
 
-# Usa o script para localizar e executar o primeiro DLL publicado
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["dotnet", "ComparadorNomes.dll"]
