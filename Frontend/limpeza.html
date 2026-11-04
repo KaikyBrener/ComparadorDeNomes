@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Limpeza — Comparador de Nomes</title>
+  </head>
+  <body>
+    <header id="navbar"></header>
+
+    <main class="container py-4">
+      <div class="text-center mb-4">
+        <h1 class="titulo-pagina">Limpeza de Dados</h1>
+        <p class="subtitulo fs-6">Extrai só os nomes (ou ID + nome) do formato de cada fonte.</p>
+      </div>
+
+      <section class="card p-3 p-md-4">
+        <div class="mb-3">
+          <label for="tipoFabricante" class="form-label">Fonte de dados</label>
+          <select id="tipoFabricante" class="form-select">
+            <option value="sistema">Sistema (Nome)</option>
+            <option value="hikvision">Hikvision (Person ID + Name)</option>
+            <option value="control">Control ID (Nome)</option>
+            <option value="intelbras">Intelbras (Nome)</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="dadosLimpeza" class="form-label">Cole os dados brutos</label>
+          <textarea
+            id="dadosLimpeza"
+            class="form-control"
+            rows="12"
+            spellcheck="false"
+            placeholder="Cole os dados aqui..."
+          ></textarea>
+        </div>
+
+        <div class="text-center mb-3">
+          <button id="btnLimpar" type="button" class="btn btn-action">
+            <i class="bi bi-eraser me-1" aria-hidden="true"></i> Limpar
+          </button>
+        </div>
+
+        <div class="mb-3">
+          <label for="resultadoLimpeza" class="form-label">
+            Resultado <span id="contagemLimpeza" class="badge text-bg-secondary ms-1">0</span>
+          </label>
+          <textarea
+            id="resultadoLimpeza"
+            class="form-control"
+            rows="12"
+            readonly
+            placeholder="Dados limpos aparecerão aqui..."
+          ></textarea>
+        </div>
+
+        <div class="text-center">
+          <button id="btnCopiar" type="button" class="btn btn-secondary">
+            <i class="bi bi-clipboard me-1" aria-hidden="true"></i> Copiar
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/src/pages/limpeza.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Comparador de Nomes — Control ID</title>
+  </head>
+  <body>
+    <header id="navbar"></header>
+
+    <main class="container py-4">
+      <div class="text-center mb-4">
+        <h1 class="titulo-pagina">Comparador de Nomes</h1>
+        <p class="subtitulo fs-6">
+          Detecta divergências e semelhanças entre a lista do sistema e a do Control ID.
+        </p>
+      </div>
+
+      <section class="card p-3 p-md-4 mb-4">
+        <div class="row g-4">
+          <div class="col-12 col-md-6">
+            <label for="sistema" class="form-label">Lista do Sistema</label>
+            <textarea
+              id="sistema"
+              class="form-control"
+              rows="10"
+              spellcheck="false"
+              placeholder="Cole sua lista"
+            ></textarea>
+            <input
+              type="file"
+              id="fileSistema"
+              class="form-control mt-2"
+              accept=".txt"
+              aria-label="Arquivo .txt com a lista do sistema"
+              aria-describedby="avisoFileSistema"
+            />
+            <div id="avisoFileSistema" class="form-text text-info" aria-live="polite"></div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="control" class="form-label">Lista do Control ID</label>
+            <textarea
+              id="control"
+              class="form-control"
+              rows="10"
+              spellcheck="false"
+              placeholder="Cole sua lista"
+            ></textarea>
+            <input
+              type="file"
+              id="fileControl"
+              class="form-control mt-2"
+              accept=".txt"
+              aria-label="Arquivo .txt com a lista do Control ID"
+              aria-describedby="avisoFileControl"
+            />
+            <div id="avisoFileControl" class="form-text text-info" aria-live="polite"></div>
+          </div>
+        </div>
+        <div class="text-center mt-4">
+          <button id="btnComparar" type="button" class="btn btn-action">
+            <i class="bi bi-search me-1" aria-hidden="true"></i> Comparar
+          </button>
+        </div>
+      </section>
+
+      <section class="card" aria-label="Resultados da comparação">
+        <ul class="nav nav-tabs px-2 pt-2" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              id="abaRemover"
+              class="nav-link active"
+              type="button"
+              role="tab"
+              data-bs-toggle="tab"
+              data-bs-target="#painelRemover"
+              aria-controls="painelRemover"
+              aria-selected="true"
+            >
+              <i class="bi bi-exclamation-octagon me-1 d-none d-sm-inline" aria-hidden="true"></i
+              >Para Remover
+              <span id="contagemRemover" class="badge text-bg-danger ms-1">0</span>
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              id="abaSimilares"
+              class="nav-link"
+              type="button"
+              role="tab"
+              data-bs-toggle="tab"
+              data-bs-target="#painelSimilares"
+              aria-controls="painelSimilares"
+              aria-selected="false"
+            >
+              <i class="bi bi-people me-1 d-none d-sm-inline" aria-hidden="true"></i>Similaridades
+              <span id="contagemSimilares" class="badge text-bg-warning ms-1">0</span>
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content p-3 p-md-4">
+          <div
+            id="painelRemover"
+            class="tab-pane fade show active"
+            role="tabpanel"
+            aria-labelledby="abaRemover"
+          >
+            <textarea
+              id="resultadoRemover"
+              class="form-control"
+              rows="10"
+              readonly
+              aria-label="Nomes para remover"
+            ></textarea>
+            <div class="d-flex flex-wrap gap-2 mt-3">
+              <button id="btnCopiarRemover" type="button" class="btn btn-secondary">
+                <i class="bi bi-clipboard me-1" aria-hidden="true"></i> Copiar
+              </button>
+              <button id="btnBaixarRemover" type="button" class="btn btn-secondary">
+                <i class="bi bi-download me-1" aria-hidden="true"></i> Baixar .txt
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="painelSimilares"
+            class="tab-pane fade"
+            role="tabpanel"
+            aria-labelledby="abaSimilares"
+          >
+            <div class="alert alert-aviso py-2 px-3 mb-3" role="note">
+              <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+              Itens parecidos NÃO entram na lista de remoção; revise manualmente.
+            </div>
+            <div class="table-responsive">
+              <table class="table table-sm table-striped align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">Control ID</th>
+                    <th scope="col">Sistema</th>
+                    <th id="colunaScore" scope="col" class="text-nowrap" aria-sort="none">
+                      <button id="btnOrdenarScore" type="button" class="btn btn-link p-0">
+                        Score (%)
+                        <i id="iconeOrdem" class="bi bi-arrow-down-up" aria-hidden="true"></i>
+                      </button>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="corpoSimilares"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/src/pages/comparador.ts"></script>
+  </body>
+</html>

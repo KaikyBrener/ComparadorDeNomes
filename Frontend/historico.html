@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Histórico — Comparador de Nomes</title>
+  </head>
+  <body>
+    <header id="navbar"></header>
+
+    <main class="container py-4">
+      <div class="text-center mb-4">
+        <h1 class="titulo-pagina">Histórico de Comparações</h1>
+        <p class="subtitulo fs-6">
+          Guardado só neste navegador (até 1000 entradas); o servidor não armazena nada.
+        </p>
+      </div>
+
+      <section class="card p-3 p-md-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+          <h2 class="h5 mb-0">
+            Registros <span id="contagemHistorico" class="badge text-bg-secondary ms-1">0</span>
+          </h2>
+          <div class="d-flex flex-wrap gap-2">
+            <button id="btnBaixarHistorico" type="button" class="btn btn-secondary">
+              <i class="bi bi-download me-1" aria-hidden="true"></i> Download TXT
+            </button>
+            <button id="btnLimparHistorico" type="button" class="btn btn-secondary">
+              <i class="bi bi-trash me-1" aria-hidden="true"></i> Limpar histórico
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-sm table-striped align-middle mb-0">
+            <thead>
+              <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Ação</th>
+                <th scope="col">Score</th>
+                <th scope="col" class="text-nowrap">Data/Hora</th>
+              </tr>
+            </thead>
+            <tbody id="corpoHistorico"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/src/pages/historico.ts"></script>
+  </body>
+</html>

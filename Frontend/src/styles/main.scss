@@ -1,0 +1,294 @@
+// Bootstrap 5.3: só os módulos usados (sem dropdowns, modais, etc.)
+$primary: #3b82f6;
+$font-family-sans-serif:
+  'Poppins',
+  system-ui,
+  -apple-system,
+  'Segoe UI',
+  Roboto,
+  sans-serif;
+$enable-dark-mode: true;
+$enable-rfs: false;
+
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/utilities';
+@import 'bootstrap/scss/root';
+@import 'bootstrap/scss/reboot';
+@import 'bootstrap/scss/type';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/tables';
+@import 'bootstrap/scss/forms';
+@import 'bootstrap/scss/buttons';
+@import 'bootstrap/scss/transitions';
+@import 'bootstrap/scss/nav';
+@import 'bootstrap/scss/navbar';
+@import 'bootstrap/scss/card';
+@import 'bootstrap/scss/badge';
+@import 'bootstrap/scss/alert';
+@import 'bootstrap/scss/helpers';
+@import 'bootstrap/scss/utilities/api';
+
+// ---- Paleta do app (tema escuro) ----
+$fundo-topo: #1e293b;
+$fundo-base: #0a0f1a;
+$superficie: #1e293b;
+$campo: #334155;
+$borda: #334155;
+$texto: #e5e7eb;
+$texto-suave: #cbd5e1;
+$azul: #3b82f6;
+$azul-escuro: #2563eb;
+
+body {
+  min-height: 100vh;
+  color: $texto;
+  background: linear-gradient(to top, $fundo-base, $fundo-topo) fixed;
+}
+
+.titulo-pagina {
+  color: #60a5fa;
+  font-weight: 700;
+  font-size: calc(1.4rem + 1.5vw);
+}
+
+.subtitulo {
+  color: $texto-suave;
+  opacity: 0.8;
+}
+
+// ---- Navegação ----
+.app-navbar {
+  background: rgba($fundo-base, 0.55);
+  border-bottom: 1px solid $borda;
+
+  .navbar-brand {
+    color: #60a5fa;
+    font-weight: 700;
+  }
+
+  .nav-link {
+    color: $texto-suave;
+    border-radius: 0.5rem;
+
+    &:hover,
+    &:focus-visible {
+      color: #fff;
+      background: rgba($azul, 0.15);
+    }
+
+    &.active {
+      color: #fff;
+      font-weight: 600;
+      background: linear-gradient(135deg, $azul-escuro, $azul);
+    }
+  }
+
+  .navbar-toggler {
+    border-color: $borda;
+    // ícone claro, definido sem estilo inline
+    --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28229, 231, 235, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+}
+
+// ---- Cartões, abas e formulários ----
+.card {
+  background: $superficie;
+  border: 1px solid $borda;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid $borda;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+
+  .nav-link {
+    color: $texto-suave;
+    background: $campo;
+    border: none;
+    border-radius: 10px 10px 0 0;
+    font-weight: 600;
+    white-space: nowrap;
+    margin-right: 0.25rem;
+
+    &:hover {
+      color: #60a5fa;
+      background: #475569;
+    }
+
+    &.active {
+      color: #fff;
+      background: linear-gradient(135deg, $azul-escuro, $azul);
+    }
+  }
+}
+
+.form-label {
+  color: $texto-suave;
+  font-weight: 600;
+}
+
+.form-control,
+.form-select {
+  color: $texto;
+  background-color: $campo;
+  border: 1px solid $azul;
+  border-radius: 8px;
+
+  &:focus {
+    color: $texto;
+    background-color: $campo;
+    border-color: #60a5fa;
+    box-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+  }
+
+  &[readonly] {
+    background-color: $campo;
+  }
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 8rem;
+}
+
+.form-text {
+  min-height: 1.25rem;
+}
+
+// ---- Botões ----
+.btn-action {
+  padding: 0.85rem 2.25rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: #fff;
+  background: linear-gradient(135deg, $azul-escuro, $azul);
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba($azul-escuro, 0.35);
+  transition:
+    transform 0.2s ease,
+    filter 0.25s ease;
+
+  &:hover,
+  &:focus-visible {
+    color: #fff;
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+  }
+
+  &:active {
+    transform: translateY(0);
+    filter: brightness(0.95);
+  }
+}
+
+.btn-secondary {
+  --bs-btn-bg: #475569;
+  --bs-btn-border-color: #475569;
+  --bs-btn-hover-bg: #64748b;
+  --bs-btn-hover-border-color: #64748b;
+  --bs-btn-active-bg: #64748b;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+// ---- Tabelas ----
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-color: #{$texto};
+  --bs-table-border-color: #{$borda};
+  --bs-table-striped-bg: rgba(255, 255, 255, 0.03);
+}
+
+.table th button {
+  color: inherit;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.score-100 {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.score-parcial {
+  color: #eab308;
+  font-weight: 700;
+}
+
+.score-zero {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.alert-aviso {
+  color: #fde68a;
+  background: rgba(234, 179, 8, 0.12);
+  border: 1px solid rgba(234, 179, 8, 0.4);
+  border-radius: 8px;
+}
+
+.texto-quebra {
+  overflow-wrap: anywhere;
+}
+
+// no histórico a tabela rola na horizontal em vez de quebrar o nome letra a letra
+.col-nome {
+  min-width: 9rem;
+}
+
+// ---- SweetAlert2 (tema escuro) ----
+.swal2-popup {
+  background: $superficie !important;
+  color: $texto !important;
+  border-radius: 15px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+  max-width: 100%;
+}
+
+.swal2-title {
+  color: #60a5fa !important;
+  font-weight: 700 !important;
+}
+
+.swal2-html-container {
+  color: $texto-suave !important;
+}
+
+.swal2-confirm {
+  background: linear-gradient(135deg, $azul-escuro, $azul) !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+}
+
+.swal2-cancel {
+  background: #475569 !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+}
+
+// ---- Telas estreitas (360 px) ----
+@media (max-width: 575.98px) {
+  .btn-action {
+    width: 100%;
+    padding-inline: 1rem;
+  }
+
+  .app-navbar .navbar-brand {
+    font-size: 1rem;
+    margin-right: 0;
+  }
+
+  .nav-tabs .nav-link {
+    padding-inline: 0.75rem;
+    font-size: 0.9rem;
+  }
+}
