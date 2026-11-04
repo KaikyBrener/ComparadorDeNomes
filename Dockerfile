@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ---------- 1) Front-end (Vite + TypeScript) ----------
-FROM node:22-alpine AS frontend
+FROM node:26-alpine AS frontend
 WORKDIR /src/Frontend
 
 # Só os manifestos primeiro: a camada do `npm ci` só é refeita quando as dependências mudam
