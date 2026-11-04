@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+# Um push novo cancela a execução anterior da mesma branch / PR
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: backend
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build
+        run: dotnet build -c Release
+
+      # Os testes de desempenho (Categoria=Desempenho) ficam de fora do CI: dependem da máquina
+      - name: Testes
+        run: dotnet test Tests/ComparadorNomes.Tests -c Release --filter "Categoria!=Desempenho"
+
+  frontend:
+    name: frontend
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: Frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: Frontend/package-lock.json
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Lint (ESLint + Prettier)
+        run: npm run lint
+
+      - name: Testes (Vitest)
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+  docker:
+    name: docker
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build da imagem
+        run: docker build -t comparador .
+
+      - name: Subir o contêiner
+        run: docker run -d --name comparador -e PORT=8080 -p 8080:8080 comparador
+
+      # Falha o job se /health não responder 200 em 30 s, se a página, os cabeçalhos
+      # de segurança ou o POST /comparar não vierem como esperado
+      - name: Teste de fumaça
+        run: bash .github/scripts/smoke-test.sh http://localhost:8080
+
+      - name: Logs do contêiner
+        if: always()
+        run: docker logs comparador
+
+      - name: Parar o contêiner
+        if: always()
+        run: docker stop comparador
