@@ -13,7 +13,7 @@ COPY Frontend/ ./
 RUN npm run build
 
 # ---------- 2) Build do back-end (.NET) ----------
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:11.0 AS build
 WORKDIR /src
 
 # Só o .csproj primeiro: o `dotnet restore` fica em cache enquanto os pacotes não mudam
