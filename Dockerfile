@@ -27,7 +27,7 @@ COPY --from=frontend /src/wwwroot ./wwwroot
 RUN dotnet publish ComparadorNomes.csproj -c Release -o /app/publish --no-restore
 
 # ---------- 3) Imagem final ----------
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:11.0 AS final
 WORKDIR /app
 
 # A aplicação lê a porta de PORT (o Render define; aqui o padrão é 5000).
